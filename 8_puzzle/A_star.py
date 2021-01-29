@@ -1,4 +1,4 @@
-# A* algorithm
+# A* algorithm to solver 8-puzzle
 
 import heapq
 class Node:
