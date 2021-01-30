@@ -1,0 +1,101 @@
+class Node:
+    def __init__(self, state):
+        self.state  = state
+        self.left   = None
+        self.right  = None
+        self.up     = None
+        self.down   = None
+        self.parent = None
+
+    def addRight(self, node):
+        self.right = node
+        self.right.parent = self
+
+    def addLeft(self, node):
+        self.left = node
+        self.left.parent = self
+
+    def addUp(self, node):
+        self.up = node
+        self.up.parent = self
+
+    def addDown(self, node):
+        self.down = node
+        self.down.parent = self
+
+
+def moveLeft(node):
+    state = node.state
+    i = state.index("0")
+    moved = state[:i-1] + "0" + state[i-1] + state[i+1:]
+    return Node(moved)
+
+
+def moveRight(node):
+    state = node.state
+    i = state.index("0")
+    moved = state[:i] + state[i+1] + "0" + state[i+2:]
+    return Node(moved)
+
+
+def moveUp(node):
+    state = node.state
+    i = state.index
+    moved = state[:i-3] + "0" + state[i-2:i] + state[i-3] + state[i+1:]
+    return Node(moved)
+
+
+def moveDown(node):
+    state = node.state
+    i = state.index
+    moved = state[:i] + state[i+3] + state[i+1:i+3] + "0" + state[i+4:]
+    return Node(moved)
+
+
+def generate_path(node):            #this function will generate the path to achieve the goal
+    list_of_path = [node]           #while there exists a parent, continue backtracking
+    while not node.parent:
+        node = node.parent
+        list_of_path.append(node)
+
+    return list_of_path
+
+
+
+def iddfs(initial, goal):
+    success = False
+    i = 0
+    while not success:
+        success, foundNode = dfs(goal, i)
+        i += 1
+    else:
+        return generate_path(foundNode)
+
+def checkPossible(start, end):
+    # if the number of inversions in goal state is even
+    # and that of initial state is odd, the goal is not reachable
+    # the same is true for the converse case
+    start = list(start)
+    startcounter = 0            #counts the number of inversions in the starting state
+    end = list[end]
+    endcounter = 0              #counts the number of inversions in the ending state
+    for i in range(9):
+        for j in range(i+1, 9):
+            if start[j] < start[i]: startcounter += 1
+            if   end[j] <   end[i]: endcounter   += 1
+
+    if (startcounter % 2) != (endcounter % 2):
+        return False
+    else:
+        return True
+
+
+stack = []                       #note that a list object can easily be used as stack with it's "append()" and "pop()" methods
+
+visited = []                     #keep track of visited nodes
+goal = "123804765"
+initial = "134802765"
+depth = 65
+
+if not checkPossible(initial, goal):
+    print("There is no path")
